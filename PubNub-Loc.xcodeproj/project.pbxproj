@@ -70,16 +70,40 @@
 		42DBCFB21C946ADC006048DF /* PubNub-Loc */ = {
 			isa = PBXGroup;
 			children = (
-				42DBCFB31C946ADC006048DF /* AppDelegate.swift */,
+				42DBCFD01C952553006048DF /* Storyboards */,
+				42DBCFCF1C952544006048DF /* Controllers */,
+				42DBCFD11C952563006048DF /* Supporting Files */,
+			);
+			path = "PubNub-Loc";
+			sourceTree = "<group>";
+		};
+		42DBCFCF1C952544006048DF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				42DBCFB51C946ADC006048DF /* ViewController.swift */,
 				42DBCFCD1C947AC2006048DF /* MapViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		42DBCFD01C952553006048DF /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
 				42DBCFB71C946ADC006048DF /* Main.storyboard */,
-				42DBCFBA1C946ADC006048DF /* Assets.xcassets */,
 				42DBCFBC1C946ADC006048DF /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		42DBCFD11C952563006048DF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				42DBCFBA1C946ADC006048DF /* Assets.xcassets */,
+				42DBCFB31C946ADC006048DF /* AppDelegate.swift */,
 				42DBCFBF1C946ADD006048DF /* Info.plist */,
 				42DBCFC51C946BFE006048DF /* PubNub-Loc-Bridging-Header.h */,
 			);
-			path = "PubNub-Loc";
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		6A59107F71F6707A6969F7E8 /* Frameworks */ = {

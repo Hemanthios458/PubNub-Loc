@@ -28,6 +28,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, PNObjectEventListe
         client?.subscribeToChannels(["locTrack"], withPresence: false)
         
         mapView = MKMapView(frame: UIScreen.mainScreen().bounds)
+        mapView.showsCompass = true
+        mapView.showsUserLocation = true
         mapView.delegate = self
         
         self.view.addSubview(mapView)
@@ -68,12 +70,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, PNObjectEventListe
                     let alert = UIAlertController(title: "Alert", message: "The user has stopped sharing the location.", preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
+                
                 }
             }
             
         }
     }
     
+    //Draws a polyline along users commute
     func updateMapOverlay() {
         // Build the overlay
         let line = MKPolyline(coordinates: &self.coordinateList, count: self.coordinateList.count)
@@ -81,10 +85,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, PNObjectEventListe
         
     }
     
+    //Renders polyline
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.blueColor()
+            polylineRenderer.strokeColor = UIColor(red: 70/255, green: 175/255, blue: 255/255, alpha: 1.0)
             polylineRenderer.lineWidth = 10
             return polylineRenderer
         }else {
@@ -93,26 +98,35 @@ class MapViewController: UIViewController, MKMapViewDelegate, PNObjectEventListe
         
     }
     
+    //To set map focus on the new position
     func updateMapFrame() {
-        let currentPosition = self.locations.last!
-        let latitudeSpan = CLLocationDistance(500)
-        let longitudeSpan = latitudeSpan
-        let region = MKCoordinateRegionMakeWithDistance(currentPosition.coordinate, latitudeSpan, longitudeSpan)
-        self.mapView.setRegion(region, animated: true)
+        if let currentPosition = self.locations.last {
+            let latitudeSpan = CLLocationDistance(500)
+            let longitudeSpan = latitudeSpan
+            let region = MKCoordinateRegionMakeWithDistance(currentPosition.coordinate, latitudeSpan, longitudeSpan)
+            self.mapView.setRegion(region, animated: true)
+        }
     }
     
+    //To update Marker Position
     func updateCurrentPositionMarker(location: CLLocation) {
-            let currentPositionMarker = MKPointAnnotation()
-            currentPositionMarker.coordinate = location.coordinate
+        let currentPositionMarker = MKPointAnnotation()
+        currentPositionMarker.coordinate = location.coordinate
+        if !isFirstMessage {
             self.mapView.addAnnotation(currentPositionMarker)
             isFirstMessage = true
-        
-        var existingAnnotations = self.mapView.annotations
-        if existingAnnotations.count > 2 {
-            existingAnnotations.removeLast()
-            self.mapView.removeAnnotations(existingAnnotations)
         }
         
+//        var existingAnnotations = self.mapView.annotations
+//        if existingAnnotations.count > 2 {
+//            existingAnnotations.removeLast()
+//            self.mapView.removeAnnotations(existingAnnotations)
+//        }
+        
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        self.client?.unsubscribeFromAll()
     }
 
 }
