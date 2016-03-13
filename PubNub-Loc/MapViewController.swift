@@ -28,7 +28,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, PNObjectEventListe
         client?.subscribeToChannels(["locTrack"], withPresence: false)
         
         mapView = MKMapView(frame: UIScreen.mainScreen().bounds)
-        mapView.showsCompass = true
+        if #available(iOS 9.0, *) {
+            mapView.showsCompass = true
+        } else {
+            // Fallback on earlier versions
+        }
         mapView.showsUserLocation = true
         mapView.delegate = self
         
